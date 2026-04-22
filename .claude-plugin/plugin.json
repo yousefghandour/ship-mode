@@ -1,6 +1,6 @@
 {
   "name": "ship-mode",
-  "version": "0.1.0",
-  "description": "Execution-mode feature development for Claude Code. Kickoff new features with interview and phased plan (reviewer subagent pressure-tests each phase), coach your prompting automatically, and reflect on sessions to improve over time.",
+  "version": "0.2.0",
+  "description": "Execution-mode feature development for Claude Code. Kickoff new features with interview and phased plan (reviewer subagent pressure-tests each phase), coach your prompting automatically, reflect on sessions to improve, and export plans for cross-model review.",
   "license": "MIT"
 }

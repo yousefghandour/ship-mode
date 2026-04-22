@@ -11,6 +11,7 @@ Three skills and one subagent, bundled as a Claude Code plugin. You talk to Clau
 - **`kickoff`** — interview → phased plan → reviewer pass → execute phase by phase with per-phase review
 - **`coach`** — reads your local session logs and suggests specific improvements to how you prompt
 - **`feedback`** — reflects on a session (or the last few days) and asks "what could you have told me upfront?"
+- **`second-opinion`** — formats a plan or diff for review by an external model (Claude.ai web, Codex, another LLM)
 - **`reviewer`** subagent — skeptical staff engineer that pressure-tests plans and diffs for `kickoff`
 
 All three skills write any accepted adjustments to your personal `~/.claude/CLAUDE.md`. Nothing is shared with the team.
@@ -86,6 +87,24 @@ What it does:
 
 Zero lessons is a valid outcome — if the session went smoothly, it says so and stops.
 
+### `second-opinion`
+
+> Activation: `/second-opinion`, "get a second opinion", "review with codex", "external review", "fresh eyes on this plan"
+
+What it does:
+1. **Detects the mode** — plan review (if a plan exists in `./docs/ship-mode/plans/`) or code/diff review (if you name a diff, SHA, or branch range like "the last 3 commits" or "on main").
+2. **Builds a single paste-ready block** — a skeptical-staff-engineer instruction paragraph, then a `---` separator, then the actual plan or diff content, then another `---`.
+3. **Scans for secrets before copying** — if anything looks like an API key, token, private key, or password, it stops and shows you the suspicious lines so you can sanitize or abort.
+4. **Copies to the system clipboard** — `pbcopy` on macOS, `xclip` / `xsel` on Linux, `clip.exe` on WSL. If no clipboard tool is available, it prints the block and tells you to copy manually.
+5. **Truncates at 8000 characters** if the block is too large, and warns you that the external reviewer is seeing a partial view.
+6. **Tells you what to do next** — paste into Claude.ai, Codex, or another model; then come back with the review and ship-mode helps reconcile it with the built-in reviewer's findings.
+
+Example:
+> `/second-opinion on the settings-page plan`
+> Skill finds `./docs/ship-mode/plans/settings-page.md`, formats the block, scans clean for secrets, copies to clipboard. "Copied. Paste into Claude.ai or Codex, then bring the review back."
+
+Use this when stakes justify cross-model review — launch-critical features, architecture decisions, anything where being wrong is expensive. Not for every kickoff.
+
 ---
 
 ## The reviewer subagent
@@ -148,9 +167,10 @@ ship-mode/
 │   ├── plugin.json
 │   └── marketplace.json
 ├── skills/
-│   ├── kickoff/SKILL.md
 │   ├── coach/SKILL.md
-│   └── feedback/SKILL.md
+│   ├── feedback/SKILL.md
+│   ├── kickoff/SKILL.md
+│   └── second-opinion/SKILL.md
 ├── agents/
 │   └── reviewer.md
 ├── README.md
