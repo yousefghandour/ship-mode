@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code session/state
+.claude/
+
+# ship-mode local state (if user chose gitignore mode for plans)
+# Note: users who want plans tracked will override this per-repo.
+# This .gitignore is for the ship-mode plugin repo itself.

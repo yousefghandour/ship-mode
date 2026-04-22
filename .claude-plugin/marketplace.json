@@ -1,0 +1,14 @@
+{
+  "name": "ship-mode",
+  "owner": {
+    "name": "yousefghandour",
+    "url": "https://github.com/yousefghandour"
+  },
+  "plugins": [
+    {
+      "name": "ship-mode",
+      "source": "./",
+      "description": "Execution-mode feature development — kickoff, coach, feedback."
+    }
+  ]
+}
